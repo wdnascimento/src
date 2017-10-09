@@ -1,0 +1,46 @@
+<div class="col-lg-12 large-container" >
+  <form name="gitForm"  novalidate>
+  <div class="col-lg-12"><div class="input-group">
+        <input type="text" class="form-control" ng-enter="vm.getResults()"  ng-model="vm.repositorySearchTerm" placeholder="Buscar...">
+          <span class="input-group-btn">
+            <button class="btn btn-secondary" type="button" ng-click="vm.getResults()">Pesquisar</button>
+          </span>
+        </div>
+  </div>
+  </form>
+
+
+<div class="row" ng-app="explorer">
+  <div ng-controller="GithubController">
+    <table class="table" ng-show="vm.resultado">
+      <thead>
+        <tr>
+          <th></th>
+          <th>Proprietário</th>
+          <th>URL</th>
+          <th>Descrição</th>
+        </tr>
+      </thead>
+        <tr ng-repeat="data in vm.dados.items">
+          <th scope="row">{{data.id}}</th>
+          <td>{{data.name}}</td>
+          <td><a href="{{data.url}}">{{data.url}}</a></td>
+          <td>{{data.description}}</td>
+        </tr>
+        </tbody>
+        <footer>
+          <uib-pagination ng-show="vm.resultado" rotate="true"
+           force-ellipses="true" 
+            max-size="vm.maxSize"  
+            total-items="vm.total"
+            ng-model="vm.currentPage" 
+            items-per-page="vm.perPage" 
+            previous-text="anterior" 
+            next-text="proximo"
+            ng-change="vm.pageChanged()"
+            ></uib-pagination>
+        </footer>
+        
+    </table>
+  </div>
+ </div>
