@@ -2,23 +2,25 @@
   'use strict';
 
   angular
-    .module("explorer")
+    .module('explorer')
     .controller('GithubController', GithubController);
-                            
-  function GithubController(GithubUserRepository, GithubUserSearch, $localStorage, $scope, $state, $log, $timeout, $interval, toastr, Github, GithubUser, $http, leafletData) {
+      
+  function GithubController(GithubUserRepository, GithubUserSearch, $localStorage, $scope, $state, $log, $timeout, $interval, toastr, Github, GithubUser, $http) {
     var vm = this;
    
     /** DEFAULTS  */
     vm.resultado = false;
+    vm.resultadousuario = false;
     vm.total = 0;
     vm.maxSize = 5;
     vm.perPage = 50;
-    vm.dados = [{}];
     vm.currentPage = 1;
+    vm.userSearchTerm = "";
+    vm.repositorySearchTerm = "";
+    
+    vm.dataUsers = [];
 
     /** DEFAULTS  */
-
-
     vm.eq = {
       name: 'equals!'
     };
@@ -28,17 +30,19 @@
     vm.and = function() {
       console.log('teste');
     };
+    
+    
     vm.queryRepositories = function() {
       Github.get({
         q: vm.repositorySearchTerm,
         page: vm.currentPage,
         per_page:vm.perPage,
-        limit:500
-
+      
       }, function(result) {
+        vm.resultadousuario = false;
         vm.resultado = true;
-        vm.dados = result;
-        vm.total = vm.dados.total_count;
+        vm.dataRepositories = result;
+        vm.total = vm.dataRepositories.total_count;
         console.log();
       });
     };
@@ -52,30 +56,48 @@
     vm.queryUserRepository = function() {
       GithubUserRepository.get({
         username: vm.userSearchTerm,
-        repo: vm.repositorySearchTerm
+        repo: vm.repositorySearchTerm,
+        page: vm.currentPage,
+        per_page: vm.perPage,
       }, function(result) {
-        console.log(result);
+        vm.resultadousuario = false;
+        vm.resultado = true;
+        vm.dataRepositories = result;
+        vm.total = vm.dataRepositories.total_count;
       });
     };
 
     vm.queryUser = function() {
       GithubUserSearch.get({
-        q: vm.userSearchTerm
+        q: vm.userSearchTerm,
+        page: vm.currentPage,
+        per_page: vm.perPage,
       }, function(result) {
-        console.log(result);
+        vm.resultadousuario = true;
+        vm.resultado = false;
+        vm.dataRepositories = result;
+        vm.total = vm.dataRepositories.total_count;
       });
     };
 
     vm.getResults = function(){
-      vm.currentPage =1 ;
-      vm.queryRepositories();
+      if((vm.userSearchTerm == '') && (vm.repositorySearchTerm != '')) {
+        vm.currentPage =1 ;
+        vm.queryRepositories();
+      } else if ((vm.userSearchTerm != '') && (vm.repositorySearchTerm == '')){
+        vm.currentPage = 1;
+        vm.queryUser();
+      } else if ((vm.userSearchTerm != '') && (vm.repositorySearchTerm != '')){
+        vm.currentPage = 1;
+        vm.queryUserRepository();
+      }
     }
 
     vm.pageChanged = function () {
       vm.queryRepositories();
     }
-  }
 
+  }
 })();
 
 

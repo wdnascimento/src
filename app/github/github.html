@@ -1,15 +1,17 @@
-<div class="col-lg-12 large-container" >
-  <form name="gitForm"  novalidate>
-  <div class="col-lg-12"><div class="input-group">
-        <input type="text" class="form-control" ng-enter="vm.getResults()"  ng-model="vm.repositorySearchTerm" placeholder="Buscar...">
-          <span class="input-group-btn">
-            <button class="btn btn-secondary" type="button" ng-click="vm.getResults()">Pesquisar</button>
-          </span>
+<div class="col-lg-12" >
+    <form name="gitForm" novalidate>
+      <div class="col-lg-6">
+          <input type="text" class="form-control" ng-enter="vm.getResults()"  ng-model="vm.repositorySearchTerm" placeholder="Buscar...">
+      </div>
+      <div class="col-lg-4">
+        <input type="text" class="form-control" ng-enter="vm.getResults()" ng-model="vm.userSearchTerm" placeholder="Usuário">
         </div>
-  </div>
-  </form>
-
-
+        <div class="col-lg-2">
+          <button class="btn btn-secondary" type="button" ng-click="vm.getResults()">Pesquisar</button>
+        </div>
+    </form>
+    
+</div>
 <div class="row" ng-app="explorer">
   <div ng-controller="GithubController">
     <table class="table" ng-show="vm.resultado">
@@ -21,7 +23,7 @@
           <th>Descrição</th>
         </tr>
       </thead>
-        <tr ng-repeat="data in vm.dados.items">
+      <tr ng-repeat="data in vm.dataRepositories.items">
           <th scope="row">{{data.id}}</th>
           <td>{{data.name}}</td>
           <td><a href="{{data.url}}">{{data.url}}</a></td>
@@ -30,7 +32,7 @@
         </tbody>
         <footer>
           <uib-pagination ng-show="vm.resultado" rotate="true"
-           force-ellipses="true" 
+          force-ellipses="true" 
             max-size="vm.maxSize"  
             total-items="vm.total"
             ng-model="vm.currentPage" 
@@ -40,7 +42,29 @@
             ng-change="vm.pageChanged()"
             ></uib-pagination>
         </footer>
-        
     </table>
+    <table class="table" ng-show="vm.resultadousuario">
+      <thead>
+        <tr>
+          <th></th>
+          <th>Proprietário</th>
+          <th>URL</th>
+          <th>Descrição</th>
+        </tr>
+      </thead>
+      <tr ng-repeat="data in vm.dataRepositories.items">
+        <th scope="row">{{data.id}}</th>
+        <td>{{data.login}}</td>
+        <td>
+          <a href="{{data.url}}">{{data.url}}</a>
+        </td>
+        <td>{{data.login}}</td>
+      </tr>
+      </tbody>
+      <footer>
+        <uib-pagination ng-show="vm.resultadousuario" rotate="true" force-ellipses="true" max-size="vm.maxSize" total-items="vm.total" ng-model="vm.currentPage"
+          items-per-page="vm.perPage" previous-text="anterior" next-text="proximo" ng-change="vm.pageChanged()"></uib-pagination>
+      </footer>
+    </table>
+    </div>
   </div>
- </div>

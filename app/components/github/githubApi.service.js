@@ -32,8 +32,7 @@ angular
       query: {
         method: "GET",
         isArray: true,
-        transformResponse: function(data, headers) {
-          return angular.fromJson(data);
+        
         }
       }
     });

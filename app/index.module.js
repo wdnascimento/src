@@ -5,7 +5,6 @@
     .module('explorer',
     ['ngAnimate',
     'ngCookies',
-    'ngTouch',
     'storage-lib',
     'ngSanitize',
     'ngMessages',
@@ -15,7 +14,8 @@
     'ui.bootstrap',
     'ui-leaflet',
     'ngStorage',
-    // 'leaflet-directive',
+    'ui.select',
+    'ngMaterial',
     'toastr']);
 
 })();
